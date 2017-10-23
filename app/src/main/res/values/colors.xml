@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#df020d</color>
+    <color name="colorPrimaryDark">#a1030b</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="track_name">#fffdfd</color>
+    <color name="artist_name">#ffffff</color>
+    <color name="body_bg">#403d3d</color>
+</resources>

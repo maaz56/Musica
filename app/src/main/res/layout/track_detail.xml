@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/album_artfull">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/body_bg"
+        android:elevation="6dp"
+
+        >
+
+        <ImageView
+            android:id="@+id/iv_album_art"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/album_art"
+            android:elevation="4dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_track_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Miley Cyrus - It's Climb"
+                android:textColor="@color/track_name"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_artist_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="Miley Cyrus"
+                android:textColor="@color/artist_name"
+                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+            <com.cuboid.cuboidcirclebutton.CuboidButton
+                android:id="@+id/btn_rewind"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                app:cub_color="#d90606"
+                app:cub_border_radius="0dp"
+                app:cub_icon="@drawable/ic_action_rewind"
+                android:layout_weight="0.3"
+                />
+
+                <com.cuboid.cuboidcirclebutton.CuboidButton
+                    android:id="@+id/btn_play"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:cub_color="#d90606"
+                    app:cub_border_radius="0dp"
+                    app:cub_icon="@drawable/ic_action_play"
+                    android:layout_weight="0.3"
+                    />
+                <com.cuboid.cuboidcirclebutton.CuboidButton
+                    android:id="@+id/btn_forward"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:cub_color="#d90606"
+                    app:cub_border_radius="0dp"
+                    app:cub_icon="@drawable/ic_action_forward"
+                    android:layout_weight="0.3"
+                    />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                />
+
+            <ru.dimorinny.floatingtextbutton.FloatingTextButton
+                android:id="@+id/btn_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center"
+                app:floating_background_color="@color/colorPrimary"
+                app:floating_icon="@drawable/ic_action_dollar"
+                app:floating_title="          4.99            "
+                app:floating_title_color="@android:color/white"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
