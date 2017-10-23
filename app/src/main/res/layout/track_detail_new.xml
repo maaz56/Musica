@@ -90,7 +90,7 @@
                 android:layout_width="54dp"
                 android:layout_height="54dp"
                 android:layout_below="@+id/tv_artist_name"
-                android:layout_toRightOf="@+id/playerControlContainer"
+                android:layout_toLeftOf="@+id/playerControlContainer"
                 android:layout_marginTop="32dp"
                 android:layout_marginLeft="16dp"
                 android:background="@drawable/circle_bg"
