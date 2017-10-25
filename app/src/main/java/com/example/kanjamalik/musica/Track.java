@@ -12,14 +12,19 @@ public class Track implements Serializable {
     private String trackName;
     private String artistName;
     private String previewUrl;
-    private String stremUrl;
 
     private String albumArtUrl;
+    private String duration;
 
-    public void setvalues(String t_Name, String ta_name, String tp_url) {
+    public void setvalues(String t_Name, String ta_name, String tp_url, String t_duration) {
         trackName = t_Name;
         artistName = ta_name;
         previewUrl = tp_url;
+        duration = t_duration;
+    }
+
+    public String getDuration() {
+        return duration;
     }
 
 

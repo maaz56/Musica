@@ -7,22 +7,20 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.commit451.nativestackblur.NativeStackBlur;
-import com.cuboid.cuboidcirclebutton.CuboidButton;
 
-import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Kanja Malik on 10/17/2017.
@@ -30,12 +28,14 @@ import java.io.IOException;
 
 public class TrackDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "TrackDetailActivity";
     private TextView mArtistName, mTrackName;
     private ImageView mAlbumArt;
 
     private MediaPlayer mMediaPlayer;
     private ImageView mPlayerPlay, mStopPlayer;
-
+    //private SeekBar mSeekBar;
+    private SeekBar mSeekBar;
 
     public static final String KEY_TRACK = "trackObj";
 
@@ -45,19 +45,25 @@ public class TrackDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.track_detail_new);
 
+
         mArtistName = (TextView) findViewById(R.id.tv_artist_name);
         mTrackName = (TextView) findViewById(R.id.tv_track_name);
         mAlbumArt = (ImageView) findViewById(R.id.iv_album_art);
         mPlayerPlay = (ImageView) findViewById(R.id.playerControl);
         mStopPlayer = (ImageView) findViewById(R.id.stopControl);
+        mSeekBar = (SeekBar) findViewById(R.id.seek);
+        // mSeekBar = (SeekBar) findViewById(R.id.seek);
+
         Intent intent = getIntent();
 
 
         final Track track = (Track) intent.getSerializableExtra(TrackDetailActivity.KEY_TRACK);
 
-        String trackName = track.getTrackName();
+        final String trackName = track.getTrackName();
         mTrackName.setText(trackName);
         mArtistName.setText(track.getArtistName());
+        Log.d(TAG, "onCreate: " + track.getDuration());
+
 
         GlideApp.with(this)
                 .asBitmap()
@@ -71,37 +77,20 @@ public class TrackDetailActivity extends AppCompatActivity {
 
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                Log.d(TAG, "onPrepared: Max Duration: " + mediaPlayer.getDuration());
                 togglePlayPause();
+                mSeekBar.setProgress(0);
+                mSeekBar.setMax(mMediaPlayer.getDuration());
+
             }
         });
-
-
 
 
         mPlayerPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mMediaPlayer.isPlaying()) {
-                    togglePlayPause();
-
-                } else {
-                    togglePlayPause();
-                    try {
-                        mMediaPlayer.setDataSource(track.getPreviewUrl());
-                        mMediaPlayer.prepareAsync();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        });
-
-
-       /* mPlayerPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -116,45 +105,98 @@ public class TrackDetailActivity extends AppCompatActivity {
                         mMediaPlayer.setDataSource(track.getPreviewUrl());
                         mMediaPlayer.prepareAsync();
 
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
 
 
             }
+
         });
+
+
+    }
+
+
+
+    /*public class SeekThread extends Thread {
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(1000);
+                Log.d("SeekThread", "run: " + 1);
+                mSeekBar.setProgress(mMediaPlayer.getDuration());
+                Log.d("SeekThread", "run: " + mMediaPlayer.getCurrentPosition());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }*/
 
-
-
-  /*  private void togglePlayPause() {
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.pause();
-            mPlayerPlay.setImageResource(R.drawable.ic_action_play);
-        } else {
-            mMediaPlayer.start();
-            mPlayerPlay.setImageResource(R.drawable.ic_pause);
-        }*/
-
-
-    }
-
-    private void toggleStopStart(){
-        if (mMediaPlayer.isPlaying()){
-            mMediaPlayer.stop();
-            mMediaPlayer.reset();
-        }
-    }
 
     private void togglePlayPause() {
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
+            //mSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
             mPlayerPlay.setImageResource(R.drawable.ic_action_play);
         } else {
             mMediaPlayer.start();
+
+            new Timer().scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    mSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
+                }
+            }, 0, 100);
+
+            mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean input) {
+
+                    if (input) {
+                        mMediaPlayer.seekTo(progress);
+                    }
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+            /*new Timer().scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    mSeekBar.setProgress(mMediaPlayer.getCurrentPosition());
+                    Log.d(TAG, "run: " + mMediaPlayer.getCurrentPosition());
+                }
+            }, 0, 100);
+
+            mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean input) {
+                    if (input) {
+                        mMediaPlayer.seekTo(progress);
+                    }
+                    mMediaPlayer.seekTo(progress);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });*/
             mPlayerPlay.setImageResource(R.drawable.ic_pause);
 
         }
@@ -182,4 +224,6 @@ public class TrackDetailActivity extends AppCompatActivity {
 
         screenBg.setImageBitmap(blurredBitmap);
     }
+
+
 }

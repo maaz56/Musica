@@ -107,8 +107,17 @@
 
             </LinearLayout>
 
+            <SeekBar
+                android:id="@+id/seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bottomBar"
+                style="@style/Base.Widget.AppCompat.SeekBar"
+                android:layout_margin="16dp"/>
+
 
             <LinearLayout
+                android:id="@+id/bottomBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

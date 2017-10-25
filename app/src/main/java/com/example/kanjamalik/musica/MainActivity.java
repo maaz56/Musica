@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
 
         }
+
         protected void onPostExecute(ArrayList<Track> tracks) {
             super.onPostExecute(tracks);
 
@@ -84,16 +85,17 @@ public class MainActivity extends AppCompatActivity {
                 String artistName = trackObject.getString("artistName");
                 String previewUrl = trackObject.getString("previewUrl");
                 String artworkUrl = trackObject.getString("artworkUrl100");
+                String trackTime = trackObject.getString("trackTimeMillis");
 
                 Track track = new Track();
-                track.setvalues(trackName, artistName, previewUrl);
+                track.setvalues(trackName, artistName, previewUrl, trackTime);
                 track.setAlbumArtUrl(artworkUrl);
 
                 tracks.add(track);
-                Log.d("Done", "Track Name: " +trackName+ "Artist Name :" +artistName+ "Preview URL :"
-                        +previewUrl);
+                Log.d("Done", "Track Name: " + trackName + "Artist Name :" + artistName + "Preview URL :"
+                        + previewUrl + "trackTimeMillis :" + trackTime);
 
-                Log.d("Done","All Result :"+results);
+                Log.d("Done", "All Result :" + results);
 
             }
 
